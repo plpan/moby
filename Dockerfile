@@ -126,9 +126,8 @@ RUN set -x \
 # IMPORTANT: If the version of Go is updated, the Windows to Linux CI machines
 #            will need updating, to avoid errors. Ping #docker-maintainers on IRC
 #            with a heads-up.
-ENV GO_VERSION 1.7.5
-RUN curl -fsSL "https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz" \
-	| tar -xzC /usr/local
+COPY go1.13.4.linux-amd64.tar.gz /usr/local
+RUN tar zxf /usr/local/go1.13.4.linux-amd64.tar.gz -C /usr/local
 
 ENV PATH /go/bin:/usr/local/go/bin:$PATH
 ENV GOPATH /go
@@ -142,15 +141,15 @@ ENV DOCKER_CROSSPLATFORMS \
 	solaris/amd64
 
 # Dependency for golint
-ENV GO_TOOLS_COMMIT 823804e1ae08dbb14eb807afc7db9993bc9e3cc3
-RUN git clone https://github.com/golang/tools.git /go/src/golang.org/x/tools \
-	&& (cd /go/src/golang.org/x/tools && git checkout -q $GO_TOOLS_COMMIT)
+#ENV GO_TOOLS_COMMIT 823804e1ae08dbb14eb807afc7db9993bc9e3cc3
+#RUN git clone https://github.com/golang/tools.git /go/src/golang.org/x/tools \
+#	&& (cd /go/src/golang.org/x/tools && git checkout -q $GO_TOOLS_COMMIT)
 
 # Grab Go's lint tool
-ENV GO_LINT_COMMIT 32a87160691b3c96046c0c678fe57c5bef761456
-RUN git clone https://github.com/golang/lint.git /go/src/github.com/golang/lint \
-	&& (cd /go/src/github.com/golang/lint && git checkout -q $GO_LINT_COMMIT) \
-	&& go install -v github.com/golang/lint/golint
+#ENV GO_LINT_COMMIT 32a87160691b3c96046c0c678fe57c5bef761456
+#RUN git clone https://github.com/golang/lint.git /go/src/github.com/golang/lint \
+#	&& (cd /go/src/github.com/golang/lint && git checkout -q $GO_LINT_COMMIT) \
+#	&& go install -v github.com/golang/lint/golint
 
 # Install CRIU for checkpoint/restore support
 ENV CRIU_VERSION 2.2

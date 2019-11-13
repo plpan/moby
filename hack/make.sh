@@ -92,6 +92,7 @@ else
 	echo >&2 '  future accountability in diagnosing build issues.  Thanks!'
 	exit 1
 fi
+GITCOMMIT=$(git rev-parse --short HEAD)
 
 if [ "$AUTO_GOPATH" ]; then
 	rm -rf .gopath
