@@ -49,6 +49,10 @@ func (clnt *client) Create(containerID string, checkpoint string, checkpointDir 
 	if _, err := clnt.getContainer(containerID); err == nil {
 		return fmt.Errorf("Container %s is already active", containerID)
 	}
+	fmt.Printf("%#v\n", clnt)
+	// &libcontainerd.client{clientCommon:libcontainerd.clientCommon{backend:(*daemon.Daemon)(0xc000332200), containers:map[string]*libcontainerd.container{"13ba6e6a35f22205ad5bdc51c9f04262ca8992a67cd3354202206fc398986a23":(*libcontainerd.container)(0xc0003702d0), "44b9bd1128899319101310a8e85bf943c5cee4f4752b331972d481854eb30c3a":(*libcontainerd.container)(0xc0003703f0), "54188e9bd997fa37f69533564941e53601d21560a17fc571a21ee6bc3091da7f":(*libcontainerd.container)(0xc000240240), "7f8e9843f55d3f38aa19accf0ccf9c3af0436c0764c3a53b1374e26de7fafd26":(*libcontainerd.container)(0xc00041e630), "e60d0d5c879e600e11b14aecb9dda8165f19d7d050e9e46de4faea1459852f42":(*libcontainerd.container)(0xc0002042d0)}, locker:(*locker.Locker)(0xc0001be9d0), mapMutex:sync.RWMutex{w:sync.Mutex{state:0, sema:0x0}, writerSem:0x0, readerSem:0x0, readerCount:0, readerWait:0}}, remote:(*libcontainerd.remote)(0xc0004a0dd0), q:libcontainerd.queue{Mutex:sync.Mutex{state:0, sema:0x0}, fns:map[string]chan struct {}(nil)}, exitNotifiers:map[string]*libcontainerd.exitNotifier{}, liveRestore:true}
+	fmt.Printf("%#v\n", clnt.remote)
+	// &libcontainerd.remote{RWMutex:sync.RWMutex{w:sync.Mutex{state:0, sema:0x0}, writerSem:0x0, readerSem:0x0, readerCount:0, readerWait:0}, apiClient:(*types.aPIClient)(0xc00014e1d0), daemonPid:5671, stateDir:"/var/run/docker/libcontainerd", rpcAddr:"/var/run/docker/libcontainerd/docker-containerd.sock", startDaemon:true, closeManually:false, debugLog:true, rpcConn:(*grpc.ClientConn)(0xc0003a6b40), clients:[]*libcontainerd.client{(*libcontainerd.client)(0xc0000909c0), (*libcontainerd.client)(0xc000144660)}, eventTsPath:"/var/run/docker/libcontainerd/event.ts", runtime:"docker-runc", runtimeArgs:[]string(nil), daemonWaitCh:(chan struct {})(0xc000376060), liveRestore:true, oomScore:-500, restoreFromTimestamp:(*timestamp.Timestamp)(0xc000153b10)}
 
 	uid, gid, err := getRootIDs(specs.Spec(spec))
 	if err != nil {
@@ -63,6 +67,8 @@ func (clnt *client) Create(containerID string, checkpoint string, checkpointDir 
 	if err := container.clean(); err != nil {
 		return err
 	}
+	fmt.Printf("%#v\n", container)
+	// &libcontainerd.container{containerCommon:libcontainerd.containerCommon{process:libcontainerd.process{processCommon:libcontainerd.processCommon{client:(*libcontainerd.client)(0xc000144660), containerID:"275dfb25283f443e4fef46556678396b95a0c0390d22a315c86560c13c351509", friendlyName:"init", systemPid:0x0}, dir:"/var/run/docker/libcontainerd/275dfb25283f443e4fef46556678396b95a0c0390d22a315c86560c13c351509"}, processes:map[string]*libcontainerd.process{}}, pauseMonitor:libcontainerd.pauseMonitor{Mutex:sync.Mutex{state:0, sema:0x0}, waiters:map[string][]chan struct {}(nil)}, oom:false, runtime:"docker-runc", runtimeArgs:[]string(nil)}
 
 	defer func() {
 		if err != nil {
