@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"io"
 	"io/ioutil"
+	"fmt"
 	"os"
 	"path/filepath"
 	"sync"
@@ -160,6 +161,8 @@ func (ctr *container) start(checkpoint string, checkpointDir string, attachStdio
 	}
 
 	resp, err := ctr.client.remote.apiClient.CreateContainer(context.Background(), r)
+	fmt.Printf("%#v\n", *(resp.Container))
+	// types.Container{Id:"e595c10808ff9e751fce27c71e75e422dc332f692eda3e4d20c0b32e32912d11", BundlePath:"/var/run/docker/libcontainerd/e595c10808ff9e751fce27c71e75e422dc332f692eda3e4d20c0b32e32912d11", Processes:[]*types.Process{(*types.Process)(0xc00040ed20)}, Status:"running", Labels:[]string(nil), Pids:[]uint32(nil), Runtime:"docker-runc"}
 	if err != nil {
 		ctr.closeFifos(iopipe)
 		return err
