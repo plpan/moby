@@ -26,7 +26,7 @@
 FROM debian:jessie
 
 # allow replacing httpredir or deb mirror
-ARG APT_MIRROR=deb.debian.org
+ARG APT_MIRROR=ftp.cn.debian.org
 RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
 
 # Add zfs ppa
