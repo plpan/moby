@@ -78,8 +78,8 @@ RUN apt-get update && apt-get install -y \
 	libzfs-dev \
 	tar \
 	zip \
-	--no-install-recommends \
-	&& pip install awscli==1.10.15
+	--no-install-recommends
+#	&& pip install awscli==1.10.15
 # Get lvm2 source for compiling statically
 ENV LVM2_VERSION 2.02.103
 RUN mkdir -p /usr/local/lvm2 \
@@ -97,15 +97,15 @@ RUN cd /usr/local/lvm2 \
 # See https://git.fedorahosted.org/cgit/lvm2.git/tree/INSTALL
 
 # Configure the container for OSX cross compilation
-ENV OSX_SDK MacOSX10.11.sdk
-ENV OSX_CROSS_COMMIT a9317c18a3a457ca0a657f08cc4d0d43c6cf8953
-RUN set -x \
-	&& export OSXCROSS_PATH="/osxcross" \
-	&& git clone https://github.com/tpoechtrager/osxcross.git $OSXCROSS_PATH \
-	&& ( cd $OSXCROSS_PATH && git checkout -q $OSX_CROSS_COMMIT) \
-	&& curl -sSL https://s3.dockerproject.org/darwin/v2/${OSX_SDK}.tar.xz -o "${OSXCROSS_PATH}/tarballs/${OSX_SDK}.tar.xz" \
-	&& UNATTENDED=yes OSX_VERSION_MIN=10.6 ${OSXCROSS_PATH}/build.sh
-ENV PATH /osxcross/target/bin:$PATH
+#ENV OSX_SDK MacOSX10.11.sdk
+#ENV OSX_CROSS_COMMIT a9317c18a3a457ca0a657f08cc4d0d43c6cf8953
+#RUN set -x \
+#	&& export OSXCROSS_PATH="/osxcross" \
+#	&& git clone https://github.com/tpoechtrager/osxcross.git $OSXCROSS_PATH \
+#	&& ( cd $OSXCROSS_PATH && git checkout -q $OSX_CROSS_COMMIT) \
+#	&& curl -sSL https://s3.dockerproject.org/darwin/v2/${OSX_SDK}.tar.xz -o "${OSXCROSS_PATH}/tarballs/${OSX_SDK}.tar.xz" \
+#	&& UNATTENDED=yes OSX_VERSION_MIN=10.6 ${OSXCROSS_PATH}/build.sh
+#ENV PATH /osxcross/target/bin:$PATH
 
 # Install seccomp: the version shipped in trusty is too old
 ENV SECCOMP_VERSION 2.3.1
@@ -135,7 +135,7 @@ ENV GOPATH /go
 # Compile Go for cross compilation
 ENV DOCKER_CROSSPLATFORMS \
 	linux/386 linux/arm \
-	darwin/amd64 \
+#	darwin/amd64 \
 	freebsd/amd64 freebsd/386 freebsd/arm \
 	windows/amd64 windows/386 \
 	solaris/amd64
@@ -196,13 +196,13 @@ RUN git clone https://github.com/docker/docker-py.git /docker-py \
 	&& pip install -r test-requirements.txt
 
 # Install yamllint for validating swagger.yaml
-RUN pip install yamllint==1.5.0
+#RUN pip install yamllint==1.5.0
 
 # Install go-swagger for validating swagger.yaml
-ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
-RUN git clone https://github.com/go-swagger/go-swagger.git /go/src/github.com/go-swagger/go-swagger \
-	&& (cd /go/src/github.com/go-swagger/go-swagger && git checkout -q $GO_SWAGGER_COMMIT) \
-	&& go install -v github.com/go-swagger/go-swagger/cmd/swagger
+#ENV GO_SWAGGER_COMMIT c28258affb0b6251755d92489ef685af8d4ff3eb
+#RUN git clone https://github.com/go-swagger/go-swagger.git /go/src/github.com/go-swagger/go-swagger \
+#	&& (cd /go/src/github.com/go-swagger/go-swagger && git checkout -q $GO_SWAGGER_COMMIT) \
+#	&& go install -v github.com/go-swagger/go-swagger/cmd/swagger
 
 # Set user.email so crosbymichael's in-container merge commits go smoothly
 RUN git config --global user.email 'docker-dummy@example.com'
