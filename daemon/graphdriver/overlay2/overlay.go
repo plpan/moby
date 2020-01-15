@@ -554,7 +554,9 @@ func (d *Driver) Get(id string, mountLabel string) (s string, err error) {
 // Put unmounts the mount path created for the give id.
 func (d *Driver) Put(id string) error {
 	mountpoint := path.Join(d.dir(id), "merged")
-	if count := d.ctr.Decrement(mountpoint); count > 0 {
+	count := d.ctr.Decrement(mountpoint)
+	fmt.Printf("stupig: mountpoint ref count: %#v\n", count)
+	if count > 0 {
 		return nil
 	}
 	if err := syscall.Unmount(mountpoint, 0); err != nil {
