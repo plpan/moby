@@ -250,6 +250,7 @@ func (c *container) NewTask(ctx context.Context, ioCreate cio.Creator, opts ...N
 	if info.Checkpoint != nil {
 		request.Checkpoint = info.Checkpoint
 	}
+	// stupig: {"container_id":"2cd9a849df586e5e7e132d099a0eecb4dcbd67ea6a98e6d009874ca166b9f3da","stdout":"/var/run/docker/containerd/2cd9a849df586e5e7e132d099a0eecb4dcbd67ea6a98e6d009874ca166b9f3da/init-stdout","stderr":"/var/run/docker/containerd/2cd9a849df586e5e7e132d099a0eecb4dcbd67ea6a98e6d009874ca166b9f3da/init-stderr","options":{"type_url":"containerd.linux.runc.CreateOptions"}}
 	response, err := c.client.TaskService().Create(ctx, request)
 	if err != nil {
 		return nil, errdefs.FromGRPC(err)
